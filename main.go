@@ -23,6 +23,7 @@ type All struct {
 	Status      string
 	PrimeAssets map[string]Asset
 	Others      map[string]Asset
+	Main        map[string]Asset
 }
 
 func getDovizResponse(ctx context.Context) (*http.Response, error) {
@@ -49,6 +50,7 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 	var all All
 	all.PrimeAssets = make(map[string]Asset)
 	all.Others = make(map[string]Asset)
+	all.Main = make(map[string]Asset)
 	// context for 3rd party url timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 3000*time.Millisecond)
 	defer cancel()
@@ -62,6 +64,25 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+	// Wide Main Asset Added (Petrol)
+	doc.Find(".mr-6.last\\:mr-0").Each(func(index int, prime *goquery.Selection) {
+		nameSel := prime.Find(".wide-currency-name")
+		name := strings.TrimSpace(nameSel.Text())
+
+		priceSel := prime.Find("span[dt='amount']")
+		price := strings.TrimSpace(priceSel.Text())
+
+		changeSel := prime.Find("span[dt='change']")
+		change := strings.TrimSpace(changeSel.Text())
+
+		if name != "" {
+			all.Main[name] = Asset{
+				Name:   name,
+				Price:  price,
+				Change: change,
+			}
+		}
+	})
 
 	doc.Find("table").Each(func(tableIndex int, table *goquery.Selection) {
 		if table.Find("span[dt='amount']").Length() > 0 &&
