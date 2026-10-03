@@ -65,7 +65,7 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	// Wide Main Asset Added (Petrol)
-	doc.Find(".mr-6.last\\:mr-0").Each(func(index int, prime *goquery.Selection) {
+	doc.Find(".sm\\:last\\:mr-0").Each(func(index int, prime *goquery.Selection) {
 		nameSel := prime.Find(".wide-currency-name")
 		name := strings.TrimSpace(nameSel.Text())
 
