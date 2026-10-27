@@ -129,7 +129,8 @@ func handlerFunc(w http.ResponseWriter, r *http.Request) {
 	table.Find("tr.table-row").Each(func(i int, row *goquery.Selection) {
 		name := strings.TrimSpace(row.Find("span.table-name").Text())
 		price := strings.TrimSpace(row.Find("span.table-price").Text())
-		change := strings.TrimSpace(row.Find("span.table-change").Text())
+		change := strings.TrimSpace(row.Find("span[dt='change']").Text()) // Web-site updated css ..
+		// change := strings.TrimSpace(row.Find("span.table-change").Text())
 
 		all.PrimeAssets[name] = Asset{Name: name, Price: price, Change: change}
 	})
