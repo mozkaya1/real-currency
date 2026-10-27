@@ -1,4 +1,4 @@
-## Go Microservice to fetch and serve for Frontend Go Projects..
+## Go Currency Microservice to fetch and serve for Frontend Go Projects..
 
 ```bash
 [musti@musti-deputyp25 real-currency]$ go run main.go 
